@@ -1,6 +1,6 @@
 "use client";
 
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { useMemo, useState } from "react";
 import { RequireAuth } from "@/components/app-shell";
@@ -61,9 +61,15 @@ function SubmitWaste() {
         <h1 className="font-display text-3xl font-medium">Submit waste</h1>
         <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted">
           Choose material and estimated weight. Collection staff verify the load,
-          apply the quality grade, and credit your wallet.
+          apply the quality grade, and credit your wallet. Dry collars, floss, and jugs go to their ward lines first.
         </p>
       </header>
+
+      <p className="text-sm text-muted">
+        See the <Link to="/collar" className="text-primary hover:underline">collar line</Link>,{" "}
+        <Link to="/floss" className="text-primary hover:underline">floss line</Link>, or{" "}
+        <Link to="/jug" className="text-primary hover:underline">jug line</Link> for dry school and household items.
+      </p>
 
       <div className="grid gap-5 rounded-[calc(var(--radius-xl)+8px)] border border-border bg-surface p-5">
         <div className="grid gap-1.5">

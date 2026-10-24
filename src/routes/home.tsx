@@ -2,7 +2,7 @@
 
 import { createRoute, Link } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
-import { Recycle, ShoppingBasket } from "lucide-react";
+import { Recycle, ShoppingBasket, Sparkles, Utensils, Shirt } from "lucide-react";
 import { RequireAuth } from "@/components/app-shell";
 import { CreditCard } from "@/components/credit-card";
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +54,22 @@ function Dashboard() {
           Open operations desk — verify drop-offs and review rates
         </Link>
       ) : null}
+
+      <section>
+        <h2 className="mb-3 font-display text-xl">Ward collection lines</h2>
+        <p className="mb-3 text-sm text-muted">Dry items for the green path. Staff accept on the shade scale — no self-credit for monsoon damp.</p>
+        <div className="grid gap-2 sm:grid-cols-3">
+          <Link to="/collar" className="block rounded-[var(--radius-lg)] border border-border bg-surface p-3 text-sm">
+            <Shirt className="mb-1 size-4 text-primary" /> Collar line
+          </Link>
+          <Link to="/floss" className="block rounded-[var(--radius-lg)] border border-border bg-surface p-3 text-sm">
+            <Sparkles className="mb-1 size-4 text-primary" /> Floss line
+          </Link>
+          <Link to="/jug" className="block rounded-[var(--radius-lg)] border border-border bg-surface p-3 text-sm">
+            <Utensils className="mb-1 size-4 text-primary" /> Jug line
+          </Link>
+        </div>
+      </section>
 
       <section>
         <h2 className="mb-3 font-display text-xl">Recent submissions</h2>
