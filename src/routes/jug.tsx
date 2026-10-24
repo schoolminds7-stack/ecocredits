@@ -1,7 +1,7 @@
 "use client";
 
 import { createRoute, Link } from "@tanstack/react-router";
-import { Route as rootRoute } from "./_root";
+import { Route as rootRoute } from "./__root";
 import { Leaf, Utensils } from "lucide-react";
 import { JUG, JUG_LOAD, JUG_RULES, JUG_SITES, JUG_STEPS } from "@/lib/jug";
 
