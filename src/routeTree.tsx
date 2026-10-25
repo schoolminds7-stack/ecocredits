@@ -10,6 +10,7 @@ import { Route as RedeemRoute } from "./routes/redeem.$productId";
 import { Route as FlossRoute } from "./routes/floss";
 import { Route as JugRoute } from "./routes/jug";
 import { Route as CollarRoute } from "./routes/collar";
+import { Route as PlacketRoute } from "./routes/placket";
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
@@ -23,4 +24,5 @@ export const routeTree = rootRoute.addChildren([
   FlossRoute,
   JugRoute,
   CollarRoute,
+  PlacketRoute,
 ]);
