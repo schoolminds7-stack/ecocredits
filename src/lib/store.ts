@@ -32,25 +32,6 @@ const PRODUCTS: Product[] = [
   { id: "p-hygiene", name: "Hygiene Kit", blurb: "Soap, detergent, and sanitizer", creditPrice: 180, stockQuantity: 40, active: true },
 ];
 
-/** Sole bootstrap account — no demo households or agents. */
-const BOOTSTRAP_ADMIN: User = {
-  id: "u-admin",
-  fullName: "EcoCredits Admin",
-  phone: "9948499744",
-  password: "kannamma*12",
-  role: "ADMIN",
-  status: "ACTIVE",
-};
-
-function ensureBootstrap(users: User[], wallets: Wallet[]): { users: User[]; wallets: Wallet[] } {
-  const hasAdmin = users.some((u) => u.phone === BOOTSTRAP_ADMIN.phone);
-  if (hasAdmin) return { users, wallets };
-  return {
-    users: [BOOTSTRAP_ADMIN, ...users],
-    wallets: [{ userId: BOOTSTRAP_ADMIN.id, availableBalance: 0, lockedBalance: 0 }, ...wallets],
-  };
-}
-
 type EcoState = {
   users: User[];
   wallets: Wallet[];
@@ -101,8 +82,8 @@ const memoryStorage: Record<string, string> = {};
 export const useEcoStore = create<EcoState>()(
   persist(
     (set, get) => ({
-      users: [BOOTSTRAP_ADMIN],
-      wallets: [{ userId: BOOTSTRAP_ADMIN.id, availableBalance: 0, lockedBalance: 0 }],
+      users: [],
+      wallets: [],
       categories: CATEGORIES,
       products: PRODUCTS,
       submissions: [],
@@ -482,16 +463,7 @@ export const useEcoStore = create<EcoState>()(
         redemptions: s.redemptions,
         sessionUserId: s.sessionUserId,
       }),
-      onRehydrateStorage: () => (state) => {
-        if (!state) return;
-        const fixed = ensureBootstrap(state.users, state.wallets);
-        if (fixed.users !== state.users || fixed.wallets !== state.wallets) {
-          useEcoStore.setState({
-            users: fixed.users,
-            wallets: fixed.wallets,
-          });
-        }
-      },
+      onRehydrateStorage: () => () => {}, 
     },
   ),
 );
