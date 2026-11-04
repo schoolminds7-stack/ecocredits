@@ -37,7 +37,7 @@ function SubmitWaste() {
   const [busy, setBusy] = useState(false);
   const selected = active.find((c) => c.id === categoryId);
 
-  async async function submit() {
+  async function submit() {
     setBusy(true);
     setMsg(null);
     try {
