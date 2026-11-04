@@ -135,7 +135,7 @@ function AdminDesk() {
                     <select
                       value={u.role}
                       disabled={u.id === sessionUserId}
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         setRoleMsg(null);
                         try {
                           await serverActions.updateRole(u.id, e.target.value as Role);
@@ -187,13 +187,7 @@ function AdminDesk() {
                   price={p.creditPrice}
                   stock={p.stockQuantity}
                   active={p.active}
-                  onSave={(price, stock, active) =>
-                    updateProduct(p.id, {
-                      creditPrice: price,
-                      stockQuantity: stock,
-                      active,
-                    })
-                  }
+                  onSave={(price, stock, active) => { void serverActions.updateProduct(p.id, p.name, p.blurb, price, stock, active).catch((e) => setRoleMsg(e instanceof Error ? e.message : "Could not save product.")); }}
                 />
               ))}
             </div>
@@ -254,8 +248,8 @@ function VerifyRow({
   weight: number;
   method: string;
   address: string | null;
-  onVerify: (w: number, g: QualityGrade) => void;
-  onReject: () => void;
+  onVerify: (w: number, g: QualityGrade) => Promise<unknown>;
+  onReject: () => Promise<unknown>;
 }) {
   const [w, setW] = useState(String(weight));
   const [g, setG] = useState<QualityGrade>("GRADE_B");
@@ -297,10 +291,10 @@ function VerifyRow({
         </div>
         <Button
           className="sm:mt-5"
-          onClick={() => {
+          onClick={async () => {
             setErr(null);
             try {
-              onVerify(Number(w), g);
+              await onVerify(Number(w), g);
             } catch (e) {
               setErr(e instanceof Error ? e.message : "Failed");
             }
@@ -311,10 +305,10 @@ function VerifyRow({
         <Button
           className="sm:mt-5"
           variant="outline"
-          onClick={() => {
+          onClick={async () => {
             setErr(null);
             try {
-              onReject();
+              await onReject();
             } catch (e) {
               setErr(e instanceof Error ? e.message : "Failed");
             }
