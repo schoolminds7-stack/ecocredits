@@ -78,15 +78,15 @@ function FlossPage() {
       <p className="text-sm text-muted">
         <Leaf className="mr-1 inline size-4 text-primary" />
         Credits still wait on the shade scale. Dry floss is a sort, not a receipt.{" "}
-        <Link to="/path" className="text-primary hover:underline">
+        <Link to="/home" className="text-primary hover:underline">
           Green path
         </Link>
         {" · "}
-        <Link to="/paste" className="text-primary hover:underline">
+        <Link to="/submit" className="text-primary hover:underline">
           Paste line
         </Link>
         {" · "}
-        <Link to="/tooth" className="text-primary hover:underline">
+        <Link to="/submit" className="text-primary hover:underline">
           Tooth line
         </Link>
       </p>
