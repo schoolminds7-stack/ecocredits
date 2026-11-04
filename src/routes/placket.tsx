@@ -78,7 +78,7 @@ function PlacketPage() {
       <p className="text-sm text-muted">
         <Leaf className="mr-1 inline size-4 text-primary" />
         Credits still wait on the shade scale. Dry plackets are a sort, not a receipt.{" "}
-        <Link to="/path" className="text-primary hover:underline">
+        <Link to="/home" className="text-primary hover:underline">
           Green path
         </Link>
         {" · "}
@@ -86,7 +86,7 @@ function PlacketPage() {
           Collar line
         </Link>
         {" · "}
-        <Link to="/cuff" className="text-primary hover:underline">
+        <Link to="/submit" className="text-primary hover:underline">
           Cuff line
         </Link>
       </p>
