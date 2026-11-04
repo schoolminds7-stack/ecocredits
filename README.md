@@ -9,22 +9,33 @@ npm run dev
 ```
 
 ## Supabase setup
-1. Configure phone authentication in Supabase Authentication settings and connect an SMS provider.
-2. Ensure the `profiles` table and signup trigger are enabled (the project already contains these).
-3. In Vercel Project Settings → Environment Variables, add:
-   - `VITE_SUPABASE_URL`: your Supabase project URL
-   - `VITE_SUPABASE_ANON_KEY`: your Supabase anon/publishable key
-4. Redeploy after setting the variables.
+1. Configure **Phone** authentication and connect an SMS provider in Supabase Auth.
+2. Set Vercel environment variables:
+   - `VITE_SUPABASE_URL`: project URL
+   - `VITE_SUPABASE_ANON_KEY`: anon/publishable key
+3. Redeploy after setting the variables.
+4. The database schema and transactional RPCs are in `supabase/migrations/`.
 
-Only use the anon/publishable key in the frontend. Never put a Supabase service-role key in Vite environment variables.
+Only the anon/publishable key belongs in the frontend. Never expose a service-role or secret key in Vite.
 
-## Features
-- Supabase phone/password sign-in and registration
-- Supabase session restoration and sign-out
-- Protected app routes and database profile role display
-- Household waste submission and marketplace UI
-- Collection/admin operations UI
-- Local Zustand state for app features not yet migrated to Supabase tables
+## First administrator
+New signups are household users by default. After creating your own account, use the Supabase SQL Editor to find your profile:
+```sql
+select id, phone, role from public.profiles;
+```
+Then promote only your own UUID once:
+```sql
+update public.profiles set role = 'ADMIN' where id = 'YOUR_AUTH_USER_UUID';
+```
+Do not share the UUID publicly. After promotion, sign out and sign in again.
 
-## Note
-Authentication and profile role lookup use Supabase. Wallet, submissions, ledger, and redemption actions are still local browser state and must be migrated to server-backed Supabase operations before production use.
+## Implemented
+- Supabase phone/password registration, sign-in, session restore, and sign-out
+- Protected routes and profile-based roles
+- Database-backed profile, wallet, category, product, submission, ledger, and redemption reads
+- Transactional server-side submission, verification/crediting, redemption, cancellation, role/rate/product updates
+- RLS and restricted direct table writes
+- Local browser persistence excludes private account, wallet, ledger, submission, and redemption records
+
+## Notes
+Phone login requires Supabase SMS configuration and phone verification settings. Wallet balances and redemption tokens are controlled by Supabase RPCs. Admin role assignment is performed through the database, not user-editable metadata.
