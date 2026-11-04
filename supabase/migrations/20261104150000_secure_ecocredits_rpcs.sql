@@ -150,3 +150,14 @@ grant execute on function public.update_ec_profile_name(text) to authenticated;
 
 revoke all privileges on public.profiles,public.wallets,public.categories,public.products,public.submissions,public.ledger,public.redemptions from anon,authenticated;
 grant select on public.profiles,public.wallets,public.categories,public.products,public.submissions,public.ledger,public.redemptions to authenticated;
+
+-- Keep the profile's phone in sync with Supabase Auth for display and re-auth.
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path=public as $$
+begin
+ insert into public.profiles(id,full_name,phone,role,status)
+ values(new.id,coalesce(new.raw_user_meta_data->>'full_name','EcoCredits user'),coalesce(nullif(new.raw_user_meta_data->>'phone',''),new.phone),'USER','ACTIVE')
+ on conflict(id) do update set phone=coalesce(excluded.phone,public.profiles.phone);
+ insert into public.wallets(user_id) values(new.id) on conflict(user_id) do nothing;
+ return new;
+end $$;
