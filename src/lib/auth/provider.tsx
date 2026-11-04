@@ -53,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         [...current.wallets, { userId: appUser.id, availableBalance: 0, lockedBalance: 0 }],
       sessionUserId: appUser.id,
     });
+    await refreshEcoData();
   }
 
   useEffect(() => {
