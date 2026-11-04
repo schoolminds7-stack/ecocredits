@@ -78,15 +78,15 @@ function JugPage() {
       <p className="text-sm text-muted">
         <Leaf className="mr-1 inline size-4 text-primary" />
         Credits still wait on the shade scale. Dry jugs are a sort, not a receipt.{" "}
-        <Link to="/path" className="text-primary hover:underline">
+        <Link to="/home" className="text-primary hover:underline">
           Green path
         </Link>
         {" · "}
-        <Link to="/saucer" className="text-primary hover:underline">
+        <Link to="/submit" className="text-primary hover:underline">
           Saucer line
         </Link>
         {" · "}
-        <Link to="/thermos" className="text-primary hover:underline">
+        <Link to="/submit" className="text-primary hover:underline">
           Thermos line
         </Link>
       </p>
