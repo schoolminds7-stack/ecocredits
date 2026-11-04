@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEcoStore } from "@/lib/store";
+import { serverActions } from "@/lib/server-actions";
 import type { Redemption } from "@/lib/types";
 
 export const Route = createRoute({
@@ -30,9 +31,6 @@ function Checkout() {
   const { productId } = Route.useParams();
   const navigate = useNavigate();
   const products = useEcoStore((s) => s.products);
-  const redeem = useEcoStore((s) => s.redeem);
-  const complete = useEcoStore((s) => s.completeRedemption);
-  const cancel = useEcoStore((s) => s.cancelRedemption);
   const product = products.find((p) => p.id === productId);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,11 +70,11 @@ function Checkout() {
           {error ? <p className="text-sm text-danger">{error}</p> : null}
           <Button
             disabled={busy}
-            onClick={() => {
+            onClick={async () => {
               setBusy(true);
               setError(null);
               try {
-                complete(result.id, otp);
+                await serverActions.completeRedemption(result.id, otp);
                 void navigate({ to: "/wallet" });
               } catch (e) {
                 setError(e instanceof Error ? e.message : "Could not complete.");
@@ -90,11 +88,11 @@ function Checkout() {
           <Button
             variant="outline"
             disabled={busy}
-            onClick={() => {
+            onClick={async () => {
               setBusy(true);
               setError(null);
               try {
-                cancel(result.id);
+                await serverActions.cancelRedemption(result.id);
                 void navigate({ to: "/market" });
               } catch (e) {
                 setError(e instanceof Error ? e.message : "Could not cancel.");
@@ -125,11 +123,12 @@ function Checkout() {
       <Button
         size="lg"
         disabled={busy}
-        onClick={() => {
+        onClick={async () => {
           setBusy(true);
           setError(null);
           try {
-            setResult(redeem(product.id));
+            const row = await serverActions.redeem(product.id) as any;
+            setResult({ id: row.id, userId: row.user_id, productId: row.product_id, credits: Number(row.credits), status: row.status, token: row.token, otp: row.otp, expiresAt: row.expires_at, createdAt: row.created_at, completedAt: row.completed_at });
           } catch (e) {
             setError(e instanceof Error ? e.message : "Could not redeem.");
           } finally {
