@@ -1,28 +1,30 @@
 # EcoCredits
 
-Production-oriented waste-to-credits React app (TanStack Router, Zustand, Tailwind v4, Vite).
-
-## Bootstrap admin
-- Mobile: `9948499744`
-- Password: `kannamma*12`
+Waste-to-credits React app built with TanStack Router, Zustand, Tailwind v4, Vite, and Supabase Auth.
 
 ## Quick start
 ```bash
 npm install
 npm run dev
-# or ./startup.sh  → http://0.0.0.0:8080
 ```
 
+## Supabase setup
+1. Configure phone authentication in Supabase Authentication settings and connect an SMS provider.
+2. Ensure the `profiles` table and signup trigger are enabled (the project already contains these).
+3. In Vercel Project Settings → Environment Variables, add:
+   - `VITE_SUPABASE_URL`: your Supabase project URL
+   - `VITE_SUPABASE_ANON_KEY`: your Supabase anon/publishable key
+4. Redeploy after setting the variables.
+
+Only use the anon/publishable key in the frontend. Never put a Supabase service-role key in Vite environment variables.
+
 ## Features
-- Household register / submit waste / redeem marketplace essentials
-- Collection agents verify or reject drop-offs
-- Admins promote users (Household / Collection agent / Admin) with last-admin protection
-- Rate, product stock, and listing management
-- Profile + password change
-- Browser-local Zustand + `localStorage` key `ecocredits-v2` (no demo seed accounts)
+- Supabase phone/password sign-in and registration
+- Supabase session restoration and sign-out
+- Protected app routes and database profile role display
+- Household waste submission and marketplace UI
+- Collection/admin operations UI
+- Local Zustand state for app features not yet migrated to Supabase tables
 
-## Grok workspace preview
-See [PREVIEW.md](./PREVIEW.md) and [UPGRADES.md](./UPGRADES.md).
-
-## Full source snapshot
-If any route is missing after clone, restore from `ecocredits-source.zip` or `EcoCredits_Combined_Source.txt` in the project artifacts / releases.
+## Note
+Authentication and profile role lookup use Supabase. Wallet, submissions, ledger, and redemption actions are still local browser state and must be migrated to server-backed Supabase operations before production use.
