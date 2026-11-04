@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { roleLabel, useEcoStore } from "@/lib/store";
 import { statusTone } from "@/lib/status";
+import { serverActions } from "@/lib/server-actions";
 import type { QualityGrade, Role } from "@/lib/types";
 
 export const Route = createRoute({
@@ -33,12 +34,6 @@ function AdminDesk() {
   const categories = useEcoStore((s) => s.categories);
   const products = useEcoStore((s) => s.products);
   const submissions = useEcoStore((s) => s.submissions);
-  const verify = useEcoStore((s) => s.verifySubmission);
-  const reject = useEcoStore((s) => s.rejectSubmission);
-  const updateRate = useEcoStore((s) => s.updateRate);
-  const setCategoryActive = useEcoStore((s) => s.setCategoryActive);
-  const updateUserRole = useEcoStore((s) => s.updateUserRole);
-  const updateProduct = useEcoStore((s) => s.updateProduct);
   const user = users.find((u) => u.id === sessionUserId)!;
   const pending = submissions.filter(
     (s) => s.status === "CREATED" || s.status === "SCHEDULED",
@@ -97,8 +92,8 @@ function AdminDesk() {
                 weight={s.estimatedWeight}
                 method={s.collectionMethod}
                 address={s.pickupAddress}
-                onVerify={(w, g) => verify(s.id, w, g)}
-                onReject={() => reject(s.id)}
+                onVerify={(w, g) => serverActions.verifySubmission(s.id, w, g)}
+                onReject={() => serverActions.rejectSubmission(s.id)}
               />
             ))}
           </div>
@@ -143,7 +138,7 @@ function AdminDesk() {
                       onChange={(e) => {
                         setRoleMsg(null);
                         try {
-                          updateUserRole(u.id, e.target.value as Role);
+                          await serverActions.updateRole(u.id, e.target.value as Role);
                           setRoleMsg(
                             `Updated ${u.fullName} to ${roleLabel(e.target.value as Role)}.`,
                           );
@@ -175,8 +170,8 @@ function AdminDesk() {
                   name={c.name}
                   value={c.creditPerKg}
                   active={c.active}
-                  onSave={(v) => updateRate(c.id, v)}
-                  onToggle={(active) => setCategoryActive(c.id, active)}
+                  onSave={(v) => { void serverActions.updateCategory(c.id, v, c.active).catch((e) => setRoleMsg(e instanceof Error ? e.message : "Could not save rate.")); }}
+                  onToggle={(active) => { void serverActions.updateCategory(c.id, c.creditPerKg, active).catch((e) => setRoleMsg(e instanceof Error ? e.message : "Could not update category.")); }}
                 />
               ))}
             </div>
