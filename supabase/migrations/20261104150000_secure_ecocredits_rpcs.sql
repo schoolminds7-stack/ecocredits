@@ -148,5 +148,5 @@ grant execute on function public.admin_update_ec_category(text,numeric,boolean) 
 grant execute on function public.admin_update_ec_product(text,text,text,numeric,integer,boolean) to authenticated;
 grant execute on function public.update_ec_profile_name(text) to authenticated;
 
-revoke insert,update,delete on public.profiles,public.wallets,public.categories,public.products,public.submissions,public.ledger,public.redemptions from anon,authenticated;
+revoke all privileges on public.profiles,public.wallets,public.categories,public.products,public.submissions,public.ledger,public.redemptions from anon,authenticated;
 grant select on public.profiles,public.wallets,public.categories,public.products,public.submissions,public.ledger,public.redemptions to authenticated;
