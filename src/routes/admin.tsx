@@ -339,7 +339,7 @@ function RateRow({
   return (
     <Card className="flex flex-wrap items-center gap-3 p-3">
       <p className="min-w-24 flex-1 text-sm font-medium">{name}</p>
-      <Badge tone={active ? "good" : "neutral">{active ? "Active" : "Off"}</Badge>
+      <Badge tone={active ? "good" : "neutral"}>{active ? "Active" : "Off"}</Badge>
       <Input
         className="max-w-28"
         type="number"
@@ -379,7 +379,7 @@ function ProductRow({
     <Card className="space-y-2 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm font-medium">{name}</p>
-        <Badge tone={a ? "good" : "neutral">{a ? "Listed" : "Hidden"}</Badge>
+        <Badge tone={a ? "good" : "neutral"}>{a ? "Listed" : "Hidden"}</Badge>
       </div>
       <div className="flex flex-wrap items-end gap-2">
         <div className="grid gap-1">
