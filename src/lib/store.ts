@@ -454,19 +454,13 @@ export const useEcoStore = create<EcoState>()(
           : localStorage,
       ),
       partialize: (s) => ({
-        users: s.users,
-        wallets: s.wallets,
         categories: s.categories,
         products: s.products,
-        submissions: s.submissions,
-        ledger: s.ledger,
-        redemptions: s.redemptions,
-        sessionUserId: s.sessionUserId,
       }),
       onRehydrateStorage: () => (state) => {
         if (!state) return;
-        const users = state.users.filter((u) => u.id !== "u-admin").map((u) => ({ ...u, password: "" }));
-        const wallets = state.wallets.filter((w) => w.userId !== "u-admin");
+        const users = (state.users ?? []).filter((u) => u.id !== "u-admin").map((u) => ({ ...u, password: "" }));
+        const wallets = (state.wallets ?? []).filter((w) => w.userId !== "u-admin");
         useEcoStore.setState({ users, wallets, sessionUserId: null });
       },
     },
