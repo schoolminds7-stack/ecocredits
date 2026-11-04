@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { roleLabel, useEcoStore } from "@/lib/store";
+import { serverActions } from "@/lib/server-actions";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -27,8 +29,6 @@ function Page() {
 function ProfileView() {
   const userId = useEcoStore((s) => s.sessionUserId)!;
   const users = useEcoStore((s) => s.users);
-  const updateProfile = useEcoStore((s) => s.updateProfile);
-  const changePassword = useEcoStore((s) => s.changePassword);
   const user = users.find((u) => u.id === userId)!;
   const [name, setName] = useState(user.fullName);
   const [current, setCurrent] = useState("");
@@ -53,11 +53,11 @@ function ProfileView() {
           <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <Button
-          onClick={() => {
+          onClick={async () => {
             setErr(null);
             setMsg(null);
             try {
-              updateProfile(name);
+              await serverActions.updateProfile(name);
               setMsg("Name updated.");
             } catch (e) {
               setErr(e instanceof Error ? e.message : "Failed");
@@ -104,7 +104,7 @@ function ProfileView() {
           </div>
         </div>
         <Button
-          onClick={() => {
+          onClick={async () => {
             setErr(null);
             setMsg(null);
             if (next !== confirm) {
@@ -112,7 +112,8 @@ function ProfileView() {
               return;
             }
             try {
-              changePassword(current, next);
+              const { error } = await supabase.auth.updateUser({ password: next });
+              if (error) throw error;
               setCurrent("");
               setNext("");
               setConfirm("");
