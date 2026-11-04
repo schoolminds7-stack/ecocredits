@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<AuthContextValue>(() => ({
-    session, user: session?.user ?? null, profile, loading, error,
+    session, user: session?.user && profile ? session.user : null, profile, loading, error,
     signIn: async (phone, password) => {
       setError(null);
       const { error: authError } = await supabase.auth.signInWithPassword({ phone: normalizePhone(phone), password });
