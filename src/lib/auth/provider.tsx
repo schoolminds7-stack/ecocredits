@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session, User as AuthUser } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { refreshEcoData } from "@/lib/server-actions";
 import { useEcoStore } from "@/lib/store";
 import type { Role, User } from "@/lib/types";
 
