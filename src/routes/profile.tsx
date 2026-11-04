@@ -112,6 +112,8 @@ function ProfileView() {
               return;
             }
             try {
+              const { error: reauthError } = await supabase.auth.signInWithPassword({ phone: user.phone, password: current });
+              if (reauthError) throw reauthError;
               const { error } = await supabase.auth.updateUser({ password: next });
               if (error) throw error;
               setCurrent("");
