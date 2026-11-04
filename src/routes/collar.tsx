@@ -78,16 +78,16 @@ function CollarPage() {
       <p className="text-sm text-muted">
         <Leaf className="mr-1 inline size-4 text-primary" />
         Credits still wait on the shade scale. Dry collars are a sort, not a receipt.{" "}
-        <Link to="/path" className="text-primary hover:underline">
-          Green path
+        <Link to="/home" className="text-primary hover:underline">
+          EcoCredits home
         </Link>
         {" · "}
         <Link to="/placket" className="text-primary hover:underline">
           Placket line
         </Link>
         {" · "}
-        <Link to="/cuff" className="text-primary hover:underline">
-          Cuff line
+        <Link to="/submit" className="text-primary hover:underline">
+          Submit waste
         </Link>
       </p>
     </div>
